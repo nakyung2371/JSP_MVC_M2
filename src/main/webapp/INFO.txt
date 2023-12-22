@@ -1,0 +1,92 @@
+
+MVC M1: *.jsp 페이지 안에 Model, view, controller가 있다.
+			- Java + HTML
+			- 코드가 복잡하다.
+			- 쉽게 개발할 수 있다.
+			- 혼자 개발, 소규모 개발, 협업해서 개발하기 어렵다.
+			- 중복 코드가 많이 발생한다.
+			- 유지 보수하기 어렵다. DB 컬럼 추가, 컬럼 이름 수정, 컬럼 이름 삭제, 컬럼의 자료형 변경
+
+MVC(Model, View, Controller): M, V, C 분리해서 개발하는 환경
+	- 초창기 개발이 조금 어려울 수 있다.
+	- 중, 대규모 사이트
+	- 협업 개발
+	- 유지 보수하기 쉽다.	<- 다른 개발자가 개발한 코드도 쉽게 이해할 수 있다.
+
+	- MVC로 개발, MVC M2
+	
+	- Model: 비즈니스 로직을 처리하는 부분, DataBase 값을 넣고, 가지고 옴
+		- DAO(Data Access Object): DB에 SQL 쿼리를 보내는 객체
+		- DTO(Data Transfer Object): 데이터를 client -> DTO -> DAO -> DB
+		
+	- Controller: Client의 요청을 처리하는 클래스
+		- JSP(서블릿으로 컨트롤러 생성)
+		- web.xml 셋팅
+		- 어노테이션으로 셋팅: @Websevlet
+		
+		- 1. 클라이언트의 요청을 받는다.
+		- 2. DTO, DAO에게 일을 시킨다.		<- 비즈니스 로직 처리
+		- 3. View 페이지를 client에게 전송함.
+		
+	- View: 화면에 출력되는 페이지, html, jsp
+		- View 페이지가 깔끔해진다.
+		
+		
+===========================================================================================
+1. DB 연결 클래스 생성: Connection 객체 사용할 DB연결
+	- common.JDBCUtil.java
+
+2. DB(Oracle)에 개발할 테이블 생성(MVC)
+	- users: 사용자 정보, user, admin
+	- board: user, admin 게시판 
+	- product: admin(관리자만 접근 가능)
+===========================================================================================
+-- MVC로 개발될 테이블(Oracle)
+
+create table board (
+    seq number(5) not null primary key,
+    title varchar2(200) null,
+    write varchar2(20) null,
+    content varchar2(2000) null,
+    regdate date default sysdate null,
+    cnt number(5) default 0 null
+);
+
+create table users(
+    id varchar2(8) not null primary key,
+    password varchar2(8) null,
+    name varchar2(20) null,
+    role varchar(5)
+);
+
+create table product (
+    p_code number(5) not null primary key,
+    p_name varchar2(200) null,
+    p_kind char(1) null,
+    p_price varchar2(10) null,
+    p_content varchar2(2000) null,
+    p_quantity varchar2(5),
+    indate date default sysdate null
+);
+===========================================================================================
+3. Controller: 서블릿으로 생성
+		- 서블릿: *.java -> 웹페이지로 출력, jsp의 <% %> - 톰캣 -> 서블릿으로 변환 후 출력\
+		- 작동:
+			- web.xml 셋팅: client 요청에 대한 controller Mapping <- (x)
+			- 어노테이션으로 셋팅: @webservlet("*.do")
+			
+		- doGet(Request req, Response resp): Client가 보내는 get 요청을 받는 메소드
+		- doPost(Request req, Response resp): Client가 보내는 post 요청을 받는 메소드
+		
+		Client가 서버에게 요청
+			- get: URL을 사용해서 요청, form method = "get"
+				- URL 뒤에 요청 정보를 보냄, 용량의 제한이 있음
+			- post: form method = "post"
+				- http 헤더 앞에 파라미터를 서버로 보냄
+			
+			
+			
+
+4. DTO 생성
+5. DAO 생성
+6. View 페이지 생성
