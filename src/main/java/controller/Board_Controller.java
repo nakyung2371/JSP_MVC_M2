@@ -79,7 +79,7 @@ public class Board_Controller extends HttpServlet {
 			response.sendRedirect("getBoardList.do");
 			
 			
-		}else if (path.equals("/getBoardList.do")) {		//DB의 레코드를 출력하는 페이지
+		} else if (path.equals("/getBoardList.do")) {		//DB의 레코드를 출력하는 페이지
 			System.out.println("/getBoardList.do 요청");
 			//로직 처리
 			
@@ -105,7 +105,7 @@ public class Board_Controller extends HttpServlet {
 			//클라이언트 뷰 페이지
 			response.sendRedirect("getBoardList.jsp");
 			
-		}else if (path.equals("/getBoard.do")) {
+		} else if (path.equals("/getBoard.do")) {
 			System.out.println("/getBoard.do 요청");
 			//로직 처리
 			
@@ -133,12 +133,57 @@ public class Board_Controller extends HttpServlet {
 			//5. 뷰 페이지
 			response.sendRedirect("getBoard.jsp");
 			
-		}else if (path.equals("/updateBoard.do")) {
+		} else if (path.equals("/updateBoard.do")) {
 			System.out.println("/updateBoard.do 요청");
 			//로직 처리 
-		}else if (path.equals("/deleteBoard.do")) {
+			//1. 클라이언트의 파라미터의 변수를 받아서 새로운 변수에 저장
+			String title = request.getParameter("title");
+			String write = request.getParameter("write");
+			String content = request.getParameter("content");
+			int seq = Integer.parseInt(request.getParameter("seq"));
+			
+			//변수값 출력:
+			/*
+			System.out.println(title);
+			System.out.println(write);
+			System.out.println(content);
+			System.out.println(seq);
+			*/
+			
+			//2. 변수를 BoardDTO에 setter 주입
+			BoardDTO dto = new BoardDTO();
+			dto.setTitle(title);
+			dto.setWrite(write);
+			dto.setContent(content);
+			dto.setSeq(seq);
+			
+			//3. BoardDAO에 updateBoard(dto)
+			BoardDAO dao = new BoardDAO();
+			dao.updateBoard(dto);
+			
+			//4. 뷰 페이지로 이동(업데이트 후 리스트 페이지로 이동)
+			response.sendRedirect("getBoardList.do");
+			
+		} else if (path.equals("/deleteBoard.do")) {
 			System.out.println("/deleteBoard.do 요청");
 			//로직 처리 
+			
+			//1. 클라이언트의 파라미터 변수의 값 할당: seq - 파라미터로 넘어오는 seq는 String이기 때문에 int 타입으로 변환
+			String s_seq = request.getParameter("seq");
+			int seq = Integer.parseInt(s_seq);
+			
+			//2. 변수의 값을 BoardDTO에 주입
+			BoardDTO dto = new BoardDTO();
+			dto.setSeq(seq);
+			
+			//3. BoardDAO에 메소드 호출: deleteBoard(dto)
+			BoardDAO dao = new BoardDAO();
+			dao.deleteBoard(dto);
+			
+			//4. 뷰 페이지로 이동
+			response.sendRedirect("getBoardList.do");
+			
+			
 		}
 			
 	}

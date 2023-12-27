@@ -9,10 +9,10 @@ import java.io.IOException;
 
 //http://localhost:8181/JSP_MVC_M2/*.act
 @WebServlet("*.act")
-public class User_Controller extends HttpServlet {
+public class User_Controller2 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
  
-    public User_Controller() {
+    public User_Controller2() {
         super();
     }
 

@@ -23,37 +23,50 @@
 	<h1> 글 상세 페이지(수정 가능하도록) </h1>
 	<hr>
 	<br> <br>
-	<form>
+	<form method = "post" action = "updateBoard.do">
+		
+		<!-- 글 수정 시 조건을 처리할 컬럼 -->
+		<input type = "hidden" name = "seq" value = "<%= board.getSeq() %>">
+			
+		
 		<table border = "1" width = "700px" cellpadding = "5px">
 		<tr>
-			<td bgcolor = "orange" align = "center"> 제목 </td>
+			<td bgcolor = "#FFD9EC" align = "center"> 제목 </td>
 			<td> <input type = "text" name = "title" value = "<%= board.getTitle() %>"> </td>
 		</tr>
 		<tr>
-			<td bgcolor = "orange" align = "center"> 작성자 </td>
+			<td bgcolor = "#FFD9EC" align = "center"> 작성자 </td>
 			<td> <input type = "text" name = "write" value = "<%= board.getWrite() %>"> </td>
 		</tr>
 		<tr>
-			<td bgcolor = "orange" align = "center"> 내용 </td>
-			<td> <textarea rows="10" cols="70"> <%= board.getContent() %></textarea> </td>
+			<td bgcolor = "#FFD9EC" align = "center"> 내용 </td>
+			<td> <textarea name = "content" rows="10" cols="70"> <%= board.getContent() %></textarea> </td>
 		</tr>
 		<tr>
-			<td bgcolor = "orange" align = "center"> 등록일 </td>
+			<td bgcolor = "#FFD9EC" align = "center"> 등록일 </td>
 			<td> <%= board.getRegdate() %> </td>
 		</tr>
 		<tr>
-			<td bgcolor = "orange" align = "center"> 조회수</td>
+			<td bgcolor = "#FFD9EC" align = "center"> 조회수</td>
 			<td> <%= board.getCnt() %></td>
 		</tr>
 		<tr>
 			<td colspan = "2" align = "center"> <input type = "submit" value = "글 수정하기"> </td>
 		</tr>
 		
-		
-		
-		
 		</table>
 	</form>
+	
+	<br> <br>
+	<a href = "deleteBoard.do?seq=<%= board.getSeq() %>">
+		글 삭제
+	</a>
+	
+	<p/> <a href = "http://localhost:8181/JSP_MVC_M2"> 홈으로 </a>
+	<p/> <a href = "getBoardList.do"> 글 목록 </a>
+	<p/> <a href = "insertBoard.jsp"> 새 글 쓰기</a>
+	
+	
 	</center>
 	
 	

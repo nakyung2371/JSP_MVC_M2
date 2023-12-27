@@ -98,6 +98,10 @@ create table product (
 6. DAO의 메소드 테스트
 
 7. View 페이지 생성: html, jsp <- wepapp
+===========================================================================================
+ctrl + shift + F: 코드 자동 정렬, 협업 시 코드 정렬
 
+	client(view) ->			*.do 요청 -> Controller(1. 요청, 2. 로직(DTO, DAO), 3. 뷰)
+	html, jsp(서버에서 렌더링)
 
-
+MVC 환경에서: CRUD(Create(입력), Read(출력), Update(수정), Delete(삭제))
