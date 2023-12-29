@@ -69,4 +69,14 @@
     <servlet-name>UserController</servlet-name>
     <url-pattern>/UserController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Member2_controller</display-name>
+    <servlet-name>Member2_controller</servlet-name>
+    <servlet-class>controller.Member2_controller</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Member2_controller</servlet-name>
+    <url-pattern>/Member2_controller</url-pattern>
+  </servlet-mapping>
 </web-app>

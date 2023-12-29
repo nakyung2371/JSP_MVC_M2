@@ -34,6 +34,12 @@ public class BoardDAO {
 	//글 조회수를 늘리는 쿼리
 	private final String ADD_CNT = "update board set cnt = cnt + 1 where seq = ?";
 	
+	//검색 기능이 적용된 쿼리를 추가(T: TITLE 컬럼을 쿼리, W: WRITE, C: CONTENT, R: REGDATE)
+	private final String BOARD_LIST_T = "select * from board where title like '%' ||?|| '%' order by seq desc";
+	private final String BOARD_LIST_W = "select * from board where write like '%' ||?|| '%' order by seq desc";
+	private final String BOARD_LIST_C = "select * from board where content like '%' ||?|| '%' order by seq desc";
+	private final String BOARD_LIST_R = "select * from board where regdate like '%' ||?|| '%' order by seq desc";
+	
 	//insertBoard(BoardDTO dto) 메소드  : 
  	public void insertBoard (BoardDTO dto) {
 		System.out.println("= insertBoard 기능 처리 =");
@@ -71,11 +77,42 @@ public class BoardDAO {
 		//	   ArrayList에 저장되는 BoardDTO 선언은 While 블락 안에서 선언
 		
 		List<BoardDTO> boardList = new ArrayList<>();
+		/*
+		  BOARD_LIST_T = "select * from board where title like '%' ||?|| '%' order by seq desc";
+		  BOARD_LIST_W = "select * from board where write like '%' ||?|| '%' order by seq desc";
+	  	  BOARD_LIST_C = "select * from board where content like '%' ||?|| '%' order by seq desc";
+		  BOARD_LIST_R = "select * from board where regdate like '%' ||?|| '%' order by seq desc";
+		 */
+		
+		//검색의 변수값이 잘 넘어오는지 확인
+		/*
+		System.out.println("===== DAO의 getBoardList =====");
+		System.out.println(dto.getSearchCondition());
+		System.out.println(dto.getSearchKeyword());
+		*/
 		
 		try {
 			conn = JDBCUtil.getConnection();	//conn 객체 활성화: Oracle, XE, HR12, 1234
-			pstmt = conn.prepareStatement(BOARD_LIST);
+			//BOARD_LIST = "select * from board order by seq desc"
+			//pstmt = conn.prepareStatement(BOARD_LIST);
 			
+			//searchCondition 변수의 넘어오는 값에 따라서 분기 처리
+			if (dto.getSearchCondition().equals("TITLE")) {
+				pstmt = conn.prepareStatement(BOARD_LIST_T);
+				
+			} else if (dto.getSearchCondition().equals("WRITE")) {
+				pstmt = conn.prepareStatement(BOARD_LIST_W);
+				
+			} else if (dto.getSearchCondition().equals("CONTENT")) {
+				pstmt = conn.prepareStatement(BOARD_LIST_C);
+				
+			} else if (dto.getSearchCondition().equals("REGDATE")) {
+				pstmt = conn.prepareStatement(BOARD_LIST_R);
+			}
+			
+			//? 변수의 값을 할당
+			pstmt.setString(1, dto.getSearchKeyword());
+						
 			//pstmt를 실행 후 rs에 레코드를 저장
 			rs = pstmt.executeQuery();
 			
@@ -91,12 +128,13 @@ public class BoardDAO {
 				//BoardDTO 객체 생성
 				
 				BoardDTO board = new BoardDTO();	//루프 블락 내에 선언 | while문 안에 선언해야 함
+				
 				board.setSeq(rs.getInt("SEQ"));
 				board.setTitle(rs.getString("TITLE"));
 				board.setWrite(rs.getString("WRITE"));
 				board.setRegdate(rs.getDate("REGDATE"));
 				board.setCnt(rs.getInt("CNT"));
-				
+
 				//boardList: ArrayList의 add 메소드를 사용해서 boardDTO를 저장함
 				boardList.add(board);
 			}

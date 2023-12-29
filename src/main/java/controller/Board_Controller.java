@@ -83,8 +83,28 @@ public class Board_Controller extends HttpServlet {
 			System.out.println("/getBoardList.do 요청");
 			//로직 처리
 			
+			//검색어 처리 부분
+			String searchCondition = request.getParameter("searchCondition");
+			String searchKeyword = request.getParameter("searchKeyword");
+			
+			//NULL에 대한 처리
+			if (searchCondition == null) {
+				searchCondition = "TITLE";
+			}
+			
+			if (searchKeyword == null) {
+				searchKeyword = "";
+			}
+
+			//System.out.println("검색 조건: " + searchCondition);
+			//System.out.println("검색어: " + searchKeyword);
+		
 			//1. BoardDTO 객체 생성
 			BoardDTO dto = new BoardDTO();
+			
+			//검색어를 dto에 setter 주입 후
+			dto.setSearchCondition(searchCondition);
+			dto.setSearchKeyword(searchKeyword);
 			
 			//2. BoardDAO 객체에 getBoardList(dto)
 			BoardDAO dao = new BoardDAO();
